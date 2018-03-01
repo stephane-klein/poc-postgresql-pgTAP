@@ -1,0 +1,32 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:9.6-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    volumes:
+        - ./data/:/var/lib/postgresql/data
+
+  wait_postgres:
+    image: "waisbrot/wait"
+    environment:
+      TARGETS: postgres:5432
+
+  db_check:
+    image: hbpmip/pgtap:0.96.0-5
+    restart: unless-stopped
+    environment:
+      DATABASE: db
+      HOST: postgres
+      USER: postgres
+      PASSWORD: password
+      TESTS: /test/*.sql -v
+    volumes:
+      - ./tests/:/test/
+
+networks:
+  default:
+    driver: bridge
