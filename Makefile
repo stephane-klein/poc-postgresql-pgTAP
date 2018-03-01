@@ -1,7 +1,7 @@
 .PHONY: init
 init:
 	docker-compose up -d postgres
-	docker-compose run -rm wait_postgres
+	docker-compose run --rm wait_postgres
 	cat create.sql | docker exec -i --user postgres `docker-compose ps -q postgres` psql db
 
 .PHONY: tests
