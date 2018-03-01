@@ -8,8 +8,8 @@ init:
 tests:
 	docker-compose run --rm db_check
 
-.PHONY: delete
-delete:
+.PHONY: destroy
+destroy:
 	docker-compose stop
 	docker-compose rm -f
 	rm data/ -rf
